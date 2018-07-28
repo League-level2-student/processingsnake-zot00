@@ -34,7 +34,7 @@ class Segment {
 Segment head;
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 6. Create and initialize String to hold the direction of your snake e.g. "up"
-
+String direction = "";
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 7. Create and initialize a variable to hold how many pieces of food the snake has eaten.
 
