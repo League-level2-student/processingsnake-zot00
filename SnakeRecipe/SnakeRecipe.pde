@@ -34,91 +34,109 @@ class Segment {
 Segment head;
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 6. Create and initialize String to hold the direction of your snake e.g. "up"
-String direction = "";
+String direction = "up";
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 7. Create and initialize a variable to hold how many pieces of food the snake has eaten.
-
+int piecesOfFood = 0;
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 8. Create and initialize foodX and foodY variables to hold the location of the food.
 
 // (Hint: use the random method to set both the x and y to random locations within the screen size (500 by 500).)
 
-//int foodX = ((int)random(50)*10);
+int foodX = ((int)random(50)*10);
+int foodY = ((int)random(50)*10);
 
 //----------------------------------------------------------------------------------------------------------------------------------\\
 void setup() {
-//----------------------------------------------------------------------------------------------------------------------------------\\
+  //----------------------------------------------------------------------------------------------------------------------------------\\
   // 9. Set the size of your sketch (500 by 500).
   size(500, 500);
-//----------------------------------------------------------------------------------------------------------------------------------\\
+  //----------------------------------------------------------------------------------------------------------------------------------\\
   // 10. initialize your head to a new segment.
-
-//----------------------------------------------------------------------------------------------------------------------------------\\
+  head = new Segment((int)random(50)*10, (int)random(50)*10);
+  //----------------------------------------------------------------------------------------------------------------------------------\\
   // 11. Use the frameRate(int rate) method to set the rate to 20.
-
-//----------------------------------------------------------------------------------------------------------------------------------\\
+  frameRate(20);
+  //----------------------------------------------------------------------------------------------------------------------------------\\
 }
 void draw() {
   background(0);
   //12. Call the drawFood, drawSnake, move, and collision methods.
-
-//----------------------------------------------------------------------------------------------------------------------------------\\
+  drawFood();
+  drawSnake();
+  move();
+  collision();
+  //----------------------------------------------------------------------------------------------------------------------------------\\
 }
 // 13. Complete the drawFood method below. (Hint: each piece of food should be a 10 by 10 rectangle).
 void drawFood() {
-  
+  rect(foodX, foodY, 10, 10);
 }
 //----------------------------------------------------------------------------------------------------------------------------------\\
 //14. Draw the snake head
 void drawSnake() {
-
-
+  rect((float) head.GetX(), (float) head.GetY(), 10, 10);
   //test your code
 }
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 15. Complete the move method below.
 void move() {
-
   // 16. Create a switch statement using your direction variable. Depending on the direction, add a new segment to your snake.
   //This is an incomplete switch statement:
-  /*
-  switch(dir) {
-   case "up":
-   // move head up here 
-   break;
-   case "down":
-   // move head down here 
-   break;
-   case "left":
-   // figure it out 
-   break;
-   case "right":
-   // mystery code goes here 
-   break;
-   }
-   */
-//----------------------------------------------------------------------------------------------------------------------------------\\
+  int speed = 5;
+  switch(direction) {
+  case "up":
+    head.SetY(head.GetY() - speed);
+    break;
+  case "down":
+    head.SetY(head.GetY() + speed);
+    break;
+  case "left":
+    head.SetX(head.GetX() - speed);
+    break;
+  case "right":
+    head.SetX(head.GetX() + speed); 
+    break;
+  }
+  //----------------------------------------------------------------------------------------------------------------------------------\\
   // 17. Call the checkBoundaries method to make sure the snake doesn't go off the screen.
-  
-//----------------------------------------------------------------------------------------------------------------------------------\\
+  checkBoundaries();
+  //----------------------------------------------------------------------------------------------------------------------------------\\
 }
 // 18. Complete the keyPressed method below. Use if statements to set your direction variable depending on what key is pressed.
 void keyPressed() {
-  
+  if (keyCode == UP && direction != "down") {
+    direction = "up";
+  } else if (keyCode == DOWN && direction != "up") {
+    direction = "down";
+  } else if (keyCode == RIGHT && direction != "left") {
+    direction = "right";
+  } else if (keyCode == LEFT && direction != "right") {
+    direction = "left";
+  }
 }
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 19. check if your head is out of bounds (teleport your snake to the other side).
 void checkBoundaries() {
-  
+  if (head.GetX()>=width) {
+    head.SetX(.000000000000001);
+  } 
+  if (head.GetX()<=0) {
+    head.SetX(width - .000000000000001);
+  } 
+  if (head.GetY()>=height) {
+    head.SetY(.000000000000001);
+  } 
+  if (head.GetY()<=0) {
+    head.SetY(height-.000000000000001);
+  }
+  //----------------------------------------------------------------------------------------------------------------------------------\\
+  //20. Make sure that the key for your current direction’s opposite doesn’t work(i.e. If you’re going up, down key shouldn’t work)
 }
-//----------------------------------------------------------------------------------------------------------------------------------\\
-//20. Make sure that the key for your current direction’s opposite doesn’t work(i.e. If you’re going up, down key shouldn’t work)
-
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 21. Complete the missing parts of the collision method below.
 
 void collision() {
-
   // If the segment is colliding with a piece of food...
   // Increase the amount of food eaten and set foodX and foodY to new random locations.
 }
