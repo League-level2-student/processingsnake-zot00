@@ -57,7 +57,7 @@ void setup() {
   head = new Segment((int)random(50)*10, (int)random(50)*10);
   //----------------------------------------------------------------------------------------------------------------------------------\\
   // 11. Use the frameRate(int rate) method to set the rate to 20.
-  frameRate(30);
+  frameRate(10);
   //----------------------------------------------------------------------------------------------------------------------------------\\
 }
 void draw() {
@@ -65,6 +65,7 @@ void draw() {
   //12. Call the drawFood, drawSnake, move, and collision methods.
   drawFood();
   drawSnake();
+  manageTail();
   move();
   collision();
   //----------------------------------------------------------------------------------------------------------------------------------\\
@@ -114,6 +115,10 @@ void keyPressed() {
     direction = "right";
   } else if (keyCode == LEFT && direction != "right") {
     direction = "left";
+  } if(key == ENTER) {
+    frameRate(50);
+  } else {
+    frameRate(10);
   }
 }
 //----------------------------------------------------------------------------------------------------------------------------------\\
@@ -140,7 +145,7 @@ void checkBoundaries() {
 void collision() {
   // If the segment is colliding with a piece of food...
   // Increase the amount of food eaten and set foodX and foodY to new random locations.
-  if(head.GetX()>=foodX && head.GetX()<=foodX + 10 && head.GetY() <= foodY+10 && head.GetY() >= foodY) {
+  if (head.GetX()>=foodX && head.GetX()<=foodX + 10 && head.GetY() <= foodY+10 && head.GetY() >= foodY) {
     piecesOfFood+=1;
     foodX = (int) random(0, width-10);
     foodY = (int) random(0, height-10);
@@ -154,17 +159,18 @@ void collision() {
  **/
 //----------------------------------------------------------------------------------------------------------------------------------\\
 //  1. Create and initialize an ArrayList of Segments. (This will be your snake tail!)
-  ArrayList<Segment> tail = new ArrayList<Segment>();
+ArrayList<Segment> tail = new ArrayList<Segment>();
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 2. Complete the missing parts of the manageTail method below.
 
 void manageTail() {
-
   //Call the drawTail and checkTailCollision methods.
-  drawTail();
+ 
   checkTailCollision();
+  collision();
   // Add a new Segment to your ArrayList that has the same X and Y as the head of your snake.
   tail.add(new Segment(head.GetX(), head.GetY()));
+   drawTail();
   // While the snake size is greater than your food, remove the first Segment in your snake.
   while (tail.size()>piecesOfFood) {
     tail.remove(0);
@@ -173,17 +179,23 @@ void manageTail() {
 
 void drawTail() {
   // Draw a 10 by 10 rectangle for each Segment in your snake ArrayList.
-  for(int i = 0; i<=tail.size();i++){
+  if(tail.size()>=1)
+  {
+    
+  for (int i = 0; i<tail.size(); i++) {
     Segment s = tail.get(i);
     rect((float) s.GetX(), (float) s.GetY(), 10, 10);
+  }
   }
 }
 //----------------------------------------------------------------------------------------------------------------------------------\\
 // 3. Complete the missing parts of the checkTailCollision method below.
 void checkTailCollision() {
   // If your head has the same location as one of your segments...
-  if(head.GetX()>=tail.get(i).GetX() && head.GetX()<=foodX + 10 && head.GetY() <= foodY+10 && head.GetY() >= foodY) {
-    
+  for (int i = 0; i<tail.size(); i++) {
+    if (head.GetX()>tail.get(i).GetX() && head.GetX()<tail.get(i).GetX() + 10 && head.GetY() < tail.get(i).GetY()+10 && head.GetY() >= tail.get(i).GetY()) {
+        piecesOfFood = 1;
+    }
   }
   // Set food back to 1.
 
